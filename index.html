@@ -1,24 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>QR-Code Generator</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
-<div class="container">
-    <h1>QR-Code Generator</h1>
-    <div class="qrcode-container">
-        <div class="qrcode"></div>
+<main class="workspace">
+    <h1>QR-Code-Generator</h1>
+    <div class="editor">
+        <section class="settings-panel" aria-label="Einstellungen">
+            <div class="text-settings">
+                <label for="textInput">URL oder Text</label>
+                <input type="text" placeholder="https://beispiel.de" id="textInput" oninput="generateQr()">
+                <label for="filenameInput">Dateiname</label>
+                <input type="text" placeholder="qrcode" id="filenameInput">
+            </div>
+            <div class="appearance-settings">
+                <fieldset id="colorSettings" class="color-settings">
+                    <legend>Farben des QR-Codes</legend>
+                    <div class="color-controls">
+                        <label>QR-Farbe <input type="color" id="qrColor" value="#000000"></label>
+                        <label>Hintergrund <input type="color" id="qrBackground" value="#ffffff"></label>
+                    </div>
+                    <label><input type="checkbox" id="qrGradient"> Farbverlauf</label>
+                    <div id="gradientSettings" class="color-controls" hidden>
+                        <label>Endfarbe <input type="color" id="qrEndColor" value="#173a80"></label>
+                        <label>Richtung
+                            <select id="qrDirection">
+                                <option value="diagonal">Diagonal</option>
+                                <option value="horizontal">Horizontal</option>
+                                <option value="vertical">Vertikal</option>
+                            </select>
+                        </label>
+                    </div>
+                </fieldset>
+                <fieldset class="logo-settings">
+                    <legend>Logo im QR-Code</legend>
+                    <label for="logoSelect">Logo auswählen</label>
+                    <select id="logoSelect">
+                        <option value="">Kein Logo</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="custom">Eigenes Bild</option>
+                    </select>
+                    <div class="logo-upload" id="logoUpload" hidden>
+                        <label for="logoFile">Bild hochladen</label>
+                        <input type="file" accept="image/*" id="logoFile">
+                    </div>
+                    <label for="logoSize">Logo-Größe <output id="logoSizeValue" for="logoSize">18 %</output></label>
+                    <input type="range" id="logoSize" min="8" max="25" value="18" disabled>
+                    <p id="logoStatus" role="status"></p>
+                </fieldset>
+            </div>
+            <fieldset class="frame-settings">
+                <legend>Rahmen</legend>
+                <label for="frameText">Rahmentext (optional)</label>
+                <input type="text" id="frameText" maxlength="48" placeholder="z. B. Speisekarte öffnen">
+                <div id="frameGallery" class="frame-gallery"></div>
+            </fieldset>
+        </section>
+        <section class="preview-panel" aria-labelledby="previewTitle">
+            <h2 id="previewTitle">Vorschau</h2>
+            <div class="preview-stage">
+                <p id="previewEmpty">Gib eine URL oder einen Text ein.</p>
+                <div class="qrcode"></div>
+            </div>
+            <div class="buttons">
+                <button type="button" onclick="generateQr()">Generieren</button>
+                <button type="button" id="downloadButton" onclick="downloadQrCode()" disabled>PNG herunterladen</button>
+            </div>
+        </section>
     </div>
-    <input type="text" placeholder="Füge eine URL oder Text ein und drücke ENTER" id="textInput" oninput="generateQr()"/>
-    <input type="text" placeholder="Gib den Namen des QR-Codes ein." id="filenameInput">
-    <div class="buttons">
-        <button onclick="generateQr()" style="margin-right: 8%">Generiere</button>
-        <button onclick="downloadQrCode()">Download</button>
-    </div>
-</div>
+</main>
+<script src="frames.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
